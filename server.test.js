@@ -85,4 +85,25 @@ describe("Testes da API de Pedidos", () => {
         expect(resposta.status).toBe(404);
     });
 
+        test("Deve rejeitar uma transição de status inválida", async () => {
+        const criacao = await request(app)
+            .post("/pedidos")
+            .send({
+                cliente: "Pedro Santos",
+                tipo: "entrega",
+                valor: 250,
+                prioridade: "normal"
+            });
+
+        const id = criacao.body.id;
+
+        const resposta = await request(app)
+            .patch(`/pedidos/${id}/status`)
+            .send({
+                status: "entregue"
+            });
+
+        expect(resposta.status).toBe(400);
+    });
+
 });

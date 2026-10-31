@@ -32,6 +32,18 @@ function atualizarStatus(id, novoStatus) {
         return null;
     }
 
+    const transicoes = {
+        recebido: ['em_preparacao', 'cancelado'],
+        em_preparacao: ['enviado', 'cancelado'],
+        enviado: ['entregue'],
+        entregue: [],
+        cancelado: []
+    };
+
+    if (!transicoes[pedido.status].includes(novoStatus)) {
+        return false;
+    }
+
     pedido.status = novoStatus;
 
     return pedido;

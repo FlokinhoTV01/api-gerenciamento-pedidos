@@ -64,11 +64,17 @@ function atualizarStatus(req, res) {
         status
     );
 
-    if (!pedido) {
-        return res.status(404).json({
-            mensagem: 'Pedido não encontrado.'
-        });
-    }
+if (pedido === null) {
+    return res.status(404).json({
+        mensagem: 'Pedido não encontrado.'
+    });
+}
+
+if (pedido === false) {
+    return res.status(400).json({
+        mensagem: 'Transição de status não permitida.'
+    });
+}
 
     return res.status(200).json(pedido);
 }
