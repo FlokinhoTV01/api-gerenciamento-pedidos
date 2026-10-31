@@ -90,7 +90,19 @@ Os status aceitos pela API são:
 - `entregue`
 - `cancelado`
 
-A rota PATCH permite atualizar o status de um pedido existente.
+A API possui regras para controlar a mudança de status dos pedidos:
+
+| Status atual | Próximos status permitidos |
+|---|---|
+| `recebido` | `em_preparacao` ou `cancelado` |
+| `em_preparacao` | `enviado` ou `cancelado` |
+| `enviado` | `entregue` |
+| `entregue` | Nenhum |
+| `cancelado` | Nenhum |
+
+Não é permitido pular etapas ou alterar o status de pedidos que já foram entregues ou cancelados.
+
+Para atualizar o status, utilize o método PATCH na rota `/pedidos/:id/status`.
 
 Exemplo de corpo da requisição:
 
@@ -99,6 +111,8 @@ Exemplo de corpo da requisição:
   "status": "em_preparacao"
 }
 ```
+
+Se a mudança não for permitida, a API retorna o código HTTP 400.
 
 ## 7. Validações e respostas
 
