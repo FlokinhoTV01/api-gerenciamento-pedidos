@@ -65,5 +65,24 @@ describe("Testes da API de Pedidos", () => {
         expect(resposta.body.status).toBe("em_preparacao");
     });
 
+        test("Deve rejeitar um pedido com valor inválido", async () => {
+        const resposta = await request(app)
+            .post("/pedidos")
+            .send({
+                cliente: "Carlos Silva",
+                tipo: "entrega",
+                valor: -50,
+                prioridade: "normal"
+            });
+
+        expect(resposta.status).toBe(400);
+    });
+
+    test("Deve retornar 404 para pedido inexistente", async () => {
+        const resposta = await request(app)
+            .get("/pedidos/999999");
+
+        expect(resposta.status).toBe(404);
+    });
 
 });
