@@ -1,4 +1,3 @@
-
 const express = require('express');
 
 const app = express();
@@ -17,12 +16,18 @@ app.use('/pedidos', pedidoRoutes);
 
 const PORT = 3000;
 
-// Inicia o servidor normalmente
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`Servidor rodando na porta ${PORT}`);
     });
 }
 
-// Permite que o Supertest utilize a API
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    res.status(500).json({
+        mensagem: 'Erro interno do servidor.'
+    });
+});
+
 module.exports = app;
